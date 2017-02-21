@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# adding hashing for users passwords so
+# they can crack them later to get into
+# lab passwords generated from keepass
 
 import csv
 import sys
