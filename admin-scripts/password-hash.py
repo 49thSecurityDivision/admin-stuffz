@@ -10,7 +10,7 @@ import md5
 # making sure that there are two arguements
 # [csv file with passwords, filename to write to]
 if len(sys.argv) != 2:
-    print("failed")
+    print("failed...you need to write after you read...")
     exit(2)
 
 # opening the first file to parsing
