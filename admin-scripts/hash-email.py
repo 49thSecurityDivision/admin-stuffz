@@ -4,6 +4,10 @@ from sys import argv
 import smtplib as mail
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
+# used to grab account information
+from os.path import join, expanduser
+from csv import reader
+from argparse import ArgumentParser
 
 '''
 I try to never put in my passwords/other osint stuff in my code
@@ -16,34 +20,30 @@ replace either all of the information with your personal file and/or
 replace it with your actual credentials where appropriate
 '''
 
-# used to grab account information
-from os.path import join, expanduser
-from csv import reader
-from argparse import ArgumentParser
-
 # account username
-parser = ArgumentParser(description='$(description)')
-parser.add_argument("-u", "--username",help="$(help-text)", action="store_true")
-if args.token:
-    apiKey = args.token
+parser = ArgumentParser(description='This script is used to send out password hashes, with a gmail account, for people that have been added to ad')
+parser.add_argument("-u", "--username", help="your email you want to send it with", action="store_true")
+parser.add_argument("-p", "--password", help="your password for you email", action="store_true")
+parser.add_argument('filez', help='argument for the file you need to provide in the following format: emailAddress,passwordHash')
+args = parser.parse_args()
+if args.username:
+    apiKey = args.username
 else:
     with open(join(expanduser('~'), 'src/49th/all.pass')) as csvfile:
         readz = reader(csvfile, delimiter=':')
         for row in readz:
-            if row[0] == '$(account)':
+            if row[0] == 'gmail-email':
                 emailAddr = row[2]
 
 
 # account password
-parser = ArgumentParser(description='$(description)')
-parser.add_argument("-p", "--password",help="$(help-text)",action="store_true")
-if args.token:
-    apiKey = args.token
+if args.password:
+    apiKey = args.password
 else:
     with open(join(expanduser('~'), 'src/49th/all.pass')) as csvfile:
         readz = reader(csvfile, delimiter=':')
         for row in readz:
-            if row[0] == '$(account)':
+            if row[0] == 'gmail-pass':
                 emailPass = row[2]
 
 
@@ -57,8 +57,8 @@ sub = '49th Security Divsion Password Hash'
 # format in csv is [email-addr,password-hash]
 # for loop for sending messages and obtaining hash with email addr of who to send to from csv
 # how to send out a mass email to all members of clubs with password hashes
-with open(argv[1], 'rb') as csvfile:
-    reader = csv.reader(csvfile)
+with open(args.filez, 'rb') as csvfile:
+    reader = reader(csvfile)
     for row in reader:
         # logging into gmail account or whatever your email uses
         server = mail.SMTP('smtp.gmail.com', 587)
