@@ -1,0 +1,3 @@
+[submodule "Rancher-Catalog"]
+	path = Rancher-Catalog
+	url = git@github.com:trvon/Rancher-Catalog.git
