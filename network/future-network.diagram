@@ -1,0 +1,33 @@
+               User interaction (bash/powershell)
+                      |
+                      |
+                      v
+                   vagrant--------------------------------------+------------------------------------+
+                      |                                         |                                    |
+                      |                                         |                                    |
+                      |                                         |                                    |
+             +-----------------+                                |                                    |
+             |                 |                                |                                    |
+             |                 |                                |                                    |
+             |                 |                                |                                    |
+             |                 |                                |                                    |
+             v                 v                                |                                    |
+    Docker(centralized)       ESXi                        Configuration                  Standards for creation
+             |                 |         +-------------------------------------------+     +----------------+
+             |                 |         |      VM      |   Networks   |   Purpose   |     | username-$(vm) |
+             |                 |         |--------------|--------------|-------------|     +----------------+
+             v                 v         |  pfsense     | WAN,DMZ,LAN  |   gateway   |     
+   deploy containers      deploy vms     +--------------+--------------+-------------+     
+             |                 |         |  kali        |     WAN      |    red      |     
+             |                 |         +--------------+--------------+-------------+     
+             |                 |         |  metasplt 2  |     DMZ      |   pivot     |     
+             +---------+-------+         +--------------+--------------+-------------+     
+                       |                 |  winxp       |     LAN      |   target    |     
+                       v                 +--------------+--------------+-------------+     
+           +----------------------+                                                                          
+           |std out to inform user|
+           |about:                |
+           | * success of creation|
+           | * kali ip address    |
+           | * how many vms in net|                                                                      
+           +----------------------+
