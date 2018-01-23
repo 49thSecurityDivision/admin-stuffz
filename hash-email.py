@@ -10,9 +10,10 @@ from email.MIMEText import MIMEText
 
 # all the metadata for sending message such as the following:
 # who from (myaddr), password (app_pass), and subject of email (sub)
-myaddr = 'email@rando.com'
-app_pass = 'supersecret!!!'
+myaddr = 'email address'
+app_pass = ''
 sub = '49th Security Divsion Password Hash'
+MESG = 'This is a test'
 
 
 # format in csv is [email-addr,password-hash]
@@ -31,7 +32,7 @@ with open(argv[1], 'rb') as csvfile:
         msg = MIMEMultipart()
         msg['From'] = myaddr
         msg['Subject'] = sub
-        body = "super nice message saying hello to everyone!!!"
+        body = MESG
         toaddr = row[0]
         hashes = row[1]
         msg['To'] = toaddr
