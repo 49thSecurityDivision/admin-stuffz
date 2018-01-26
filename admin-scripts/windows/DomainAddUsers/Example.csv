@@ -1,0 +1,2 @@
+firstname,lastname,username,password,ou
+john,doe,jdoe,password,"OU=Users,DC=Domain,DC=local"
