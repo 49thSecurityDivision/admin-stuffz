@@ -1,5 +1,6 @@
 #!/usr/bin/env python2.7
 import os, time
+from csv import reader
 from httplib2 import Http
 from apiclient.discovery import build
 from oauth2client import client, tools
@@ -37,7 +38,7 @@ def get_sheets(credz,sheetID):
 
 def main():
 
-    with open('/coding/mine/all.pass') as csvfile:
+    with open('/coding/49th/creds/all.pass') as csvfile:
         readz = reader(csvfile,delimiter=':')
         for row in readz:
             if row[0] == 'rsa_pull':
@@ -57,7 +58,7 @@ def main():
     sheets = get_sheets(credentials, sheetId)
 
     #  print(sheets['spreadsheetId'])
-    for i in sheets['sheets']['properties']:
+    for i in sheets['sheets']:
         print(i)
         #  print(str(i) + ' + ' + str(type(i)))
     # getting specific keyz and users
