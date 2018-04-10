@@ -1,0 +1,14 @@
+admin_group: audio
+users:
+        - key: bob
+          name: username
+          device: 
+                - tool1
+                - tool2
+          rsaKey: rsaKey1
+        - key: tom
+          name: username
+          device:
+                  - bob1
+                  - bob2
+          rsaKey: rsaKey2
