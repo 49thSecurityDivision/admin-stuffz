@@ -1,0 +1,53 @@
+---
+- hosts: scoreboard
+  handlers:
+          - name: restart nginx
+            service: name=nginx state=restarted
+            become: yes
+  vars:
+          git_url: "https://github.com/CTFd/CTFd.git"
+          ssh_user: "vagrant"
+          ctfd_dir: "/opt/CTFd"
+          webserver_hostname: 'scoreboard.localdomain'
+          webserver_pub_ip: '192.168.1.3'
+          site_avail_path: '/etc/nginx/sites-available/default'
+          site_enabled_path: '/etc/nginx/sites-enabled/default'
+          os_packages:
+                  - nginx
+  tasks:
+          - name: setting up ctfd folder
+            become: yes
+            file:
+                    path: '{{ ctfd_dir }}'
+                    owner: '{{ ssh_user }}'
+                    state: directory
+          - name: download ctfd
+            git:
+                    repo: '{{ git_url }}'
+                    dest: '{{ ctfd_dir }}'
+            ignore_errors: True
+          - name: preparing ctfd install
+            shell: '{{ctfd_dir}}/prepare.sh'
+            args:
+                    chdir: '{{ ctfd_dir }}'
+          - name: installing nginx
+            become: yes
+            package:
+                    name: '{{ os_packages }}'
+          - name: copying nginx config
+            become: yes
+            template:
+                    dest: '{{ site_avail_path }}'
+                    src: 'default.jn2'
+            notify:
+                    - restart nginx
+          - name: symlink to make enabled
+            become: yes
+            file:
+                    state: link
+                    src: '{{ site_avail_path }}'
+                    path: '{{ site_enabled_path }}'
+          - name: nginx self signed cert
+            become: yes
+            shell: 'test -e /etc/nginx/cert.crt || openssl req  -subj "/C=US/ST=North Carolina/L=Charlotte/O=49th Security Division CTF/CN={{ webserver_hostname }}" -x509 -nodes -days 365 -newkey rsa:4096 -keyout /etc/nginx/cert.key -out /etc/nginx/cert.crt'
+...
