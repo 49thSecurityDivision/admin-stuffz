@@ -67,18 +67,6 @@ def get_users(rsaKeyzFormData, sheetNamez):
     except:
         raise
 
-    # looping through yaml and testing for user
-    #  for user in usersFilez:
-    #      for k,v in user.items():
-    #          print('type: %s\nkey: %s' % (type(k),k))
-    #          if isinstance(v, (list,)):
-    #              for val in v:
-    #                  if 'arod' in val.values():
-    #                      print('there is arod')
-    #                  print('type: %s\nvalue: %s' % (type(val),val))
-    #          else:
-    #              print('type: %s\nvalue: %s' % (type(v),v))
-    # looping through all the users for key submissions
     for user in rsaKeyzFormData:
 
         # accessing the email for a key value
@@ -94,10 +82,6 @@ def get_users(rsaKeyzFormData, sheetNamez):
         rsaKey = user[4].encode('ascii','replace')
 
         if email and username and rsaKey:
-            #  print('email = ' + str(type(email.encode('ascii','replace'))))
-            #  print('username = ' + str(type(username)))
-            #  print('device name = ' + str(type(device)))
-            #  print('rsa key = ' + str(type(rsaKey)))
             newData = { 'key': email, 'name':username, 'device': device, 'rsaKey': rsaKey }
             set_keys(usersz,newData)
     print(usersz)

@@ -1,2 +1,4 @@
 auto-accept_members.py
 reverse-ssh.sh
+*.retry
+testing/
