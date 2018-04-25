@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 import os, time, argparse, yaml, codecs
 from csv import reader
+from datetime import date,timedelta
 from httplib2 import Http
 from apiclient.discovery import build
 from oauth2client import client, tools
@@ -44,28 +45,10 @@ def get_keys(sheetz):
     # returning the key values in list form
     return keyz
 
-def check_users(emailz, usersz):
-    print(hello)
-
 
 def get_users(rsaKeyzFormData, sheetNamez):
 
     usersz = []
-
-    try:
-        knownUsersz = open('test.yml',mode='r')
-        #  knownUsersz = open(sheetNamez + '.yml',mode='r')
-        usersFilez = yaml.load_all(knownUsersz)
-        for user in usersFilez:
-            for k,v in user.items():
-                if k == 'users':
-                    print(k)
-                    usersz += v
-    except IOError as e:
-        print(e)
-        pass
-    except:
-        raise
 
     for user in rsaKeyzFormData:
 
@@ -75,39 +58,42 @@ def get_users(rsaKeyzFormData, sheetNamez):
         # accessing the username that the user submitted
         username = user[2].encode('ascii','replace')
 
-        # accessing the device name that the user submitted
-        device = user[3].encode('ascii','replace')
-
         # accessing the rsa key that the user submitted
         rsaKey = user[4].encode('ascii','replace')
 
         if email and username and rsaKey:
-            newData = { 'key': email, 'name':username, 'device': device, 'rsaKey': rsaKey }
-            set_keys(usersz,newData)
-    print(usersz)
+            newData = { 'key': email, 'name':username, 'rsaKey': rsaKey }
+            newUsersz = set_keys(usersz,newData)
+        else:
+            print('not working properly')
+            exit(2)
+    return newUsersz
 
 def set_keys(usersz,newData):
     if any(d['key'] == newData['key'] for d in usersz):
         for user in usersz:
             if user['key'] == newData['key']:
-                if 'device' in user:
-                    if isinstance(user['device'], str):
-                        user['device'] = [user['device'],newData['device']]
-                    else:
-                        user['device'].append(newData['device'])
                 if isinstance(user['rsaKey'], str):
-                    user['rsaKey'] = [user['rsaKey'],newData['rsaKey']]
+                    if newData['rsaKey'] != user['rsaKey']:
+                        user['rsaKey'] = [user['rsaKey'],newData['rsaKey']]
                 else:
-                    user['rsaKey'].append(newData['device'])
+                    if newData['rsaKey'] not in user['rsaKey']:
+                        user['rsaKey'].append(newData['rsaKey'])
+        return usersz
     elif not any(d['key'] == newData['key'] for d in usersz):
         usersz.append(newData)
+        return usersz
     else:
         print('Something weird')
 
 def set_users(usersz, sheetNamez):
     # dictionary to yaml
-    # yaml.dump(yas,outfile,default_flow_style=False)
-    print('tmp')
+    yamlOut = {'users':usersz}
+    with open('users.yml', 'w') as outfile:
+        yaml.dump(yamlOut,outfile,default_flow_style=False)
+    # accessing the email for a key value
+    # accessing the username that the user submitted
+    # accessing the rsa key that the user submitted
 
 
 def errorz(info):
@@ -143,7 +129,7 @@ def main():
     rsaKeys = get_keys(sheets)
     if rsaKeys:
         users = get_users(rsaKeys, userSheetName)
-        #  set_users(users, userSheetName)
+        set_users(users, userSheetName)
     else:
         print('Nothing else to do...')
         exit()
