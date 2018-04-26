@@ -1,0 +1,3 @@
+tmux -S /tmp/pi-music new -s shared
+chgrp music /tmp/pi-music
+tmux -S /tmp/pi-music attach -t shared
