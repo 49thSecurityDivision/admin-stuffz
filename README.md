@@ -49,7 +49,7 @@ I have not been maintiaining the bash scripts to work just as effectively as the
 
 For more info checkout the 49thlab\_dev folders [README.md](49thlab_dev/README.md)
 
-After you have completed the setup you are good to start developing. We can share all the credential information we need to through messaging, so we don't post any plaintext creds on the repo.
+After you have completed the setup you are good to start developing. We can share all the credential information we need to through lastpass, so we don't post any plaintext creds on the repo.
 
 ## Everyone else
 
