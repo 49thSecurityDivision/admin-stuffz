@@ -51,10 +51,9 @@ For more info checkout the 49thlab\_dev folders [README.md](49thlab_dev/README.m
 
 After you have completed the setup you are good to start developing. We can share all the credential information we need to through lastpass, so we don't post any plaintext creds on the repo.
 
-## Everyone else
+## Repo Submodules and Projects
 
 ### Submodules
-- Rancher-Catalog
 
 #### Notes
 - Pull submodules:
