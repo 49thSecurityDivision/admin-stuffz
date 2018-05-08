@@ -1,0 +1,35 @@
+---
+- hosts: all
+  become: yes
+  vars:
+          os_packages:
+                  - python2.7
+                  - python-pip
+                  - ansible
+          pip_packages:
+                  - pip
+                  - google-api-python-client
+                  - httplib2
+  handlers:
+          - name: update cache
+            apt:
+                    update_cache: yes
+            when: ansible_os_family == "Debian"
+  pre_tasks:
+          - name: getting most up to date ansible
+            apt_repository:
+                    repo: ppa:ansible/ansible
+            when: ansible_os_family == "Debian"
+            notify:
+                    - update cache
+            
+  tasks:
+          - name: installing os packages
+            package:
+                    name: '{{ os_packages }}'
+                    state: present
+          - name: installing pip packages
+            pip:
+                    name: '{{ pip_packages }}'
+                    state: latest
+...

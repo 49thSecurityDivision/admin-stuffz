@@ -1,0 +1,38 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  # client vm for testing playbooks/scripts out on
+  config.vm.define "client" , autostart: false do |client|
+    client.vm.box = "ubuntu/xenial64"
+    # install python so ansible is happy
+    client.vm.network "private_network", ip: "192.168.50.4"
+    client.vm.provision :ansible do |ansible|
+      ansible.playbook = "ansible_prov/pre-prov.yml"
+    end
+    # actually provision the machine to how I like
+    client.vm.provision :ansible do |ansible|
+      ansible.playbook = "ansible_prov/ansible_vagrant-manage.yml"
+    end
+  end
+
+  # server vm for actually creating playbooks/scripts
+  config.vm.define "server" do |server|
+    server.vm.box = "ubuntu/xenial64"
+    server.vm.network "private_network", ip: "192.168.50.5"
+    server.vm.synced_folder "~/src/", "/coding", create: true
+    # install python so ansible is happy
+    server.vm.provision :ansible do |ansible|
+      ansible.playbook = "ansible_prov/pre-prov.yml"
+    end
+    # actually provision the machine to how I like
+    server.vm.provision :ansible do |ansible|
+      ansible.playbook = "ansible_prov/prov.yml"
+    end
+    # customization per project (change the * to the project name)
+    server.vm.provision :ansible do |ansible|
+      ansible.playbook = "ansible_prov/prov-google_api.yml"
+    end
+  end
+end

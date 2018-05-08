@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: yes
+  vars:
+          userz: vagrant
+  pre_tasks:
+          - name: updating deb base packages
+            apt:
+                    update_cache: yes
+                    cache_valid_time: 600
+            when: ansible_os_family == "Debian"
+
+          - name: updating rhel base packages
+            yum:
+                    update_cache: yes
+            when: ansible_os_family == "RedHat"
+
+          - name: updating arch base packages
+            yum:
+                    update_cache: yes
+            when: ansible_os_family == "Archlinux"
+
+  tasks:
+          - name: letting ssh password
+            authorized_key:
+                    key: "{{ lookup('file', '/home/elrey/src/49th/creds/rsa-keys/ctf_prov.pub') }}"
+                    user: 'vagrant'
+                    manage_dir: 'no'
+...
