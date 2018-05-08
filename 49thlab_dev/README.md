@@ -1,4 +1,4 @@
-# Devlopment Env
+# Development Env
 
 ## Dos and Donts
 
