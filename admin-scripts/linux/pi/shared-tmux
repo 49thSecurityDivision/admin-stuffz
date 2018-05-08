@@ -1,3 +1,2 @@
-tmux -S /tmp/pi-music new -s shared
-chgrp music /tmp/pi-music
-tmux -S /tmp/pi-music attach -t shared
+sudo -u music sh -c "cd ~ && tmux -S /tmp/pi-music new -d -s shared"
+sudo chgrp music /tmp/pi-music
