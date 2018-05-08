@@ -3,7 +3,9 @@
   become: yes
   vars:
           userz: vagrant
-          dev_location: '/coding/49th/lab/admin-scripts/linux/rsa-pull'
+          # specify the full path to your devlopment environment
+          # i.e. dev_location: '/coding/49th/lab/admin-scripts/linux/rsa-pull'
+          dev_location: '/coding/lab/'
           packages:
                   - screen
 
